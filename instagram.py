@@ -65,22 +65,25 @@ class InstaBot:
         sleep(randint(2, 4))
 
         self.go_to_user(nick)
-        num = self._get_number_posts()
-        loops = num // 12
-        if loops == 0:
-            loops = 1
-        all_urls = set()
+        try:
+            self.browser.find_element_by_class_name('_4Kbb_._54f4m')
+            print('Приватный аккаунт')
+            self.close_conn()
+        except:
+            num = self._get_number_posts()
+            loops = num // 12 + 1
+            all_urls = set()
 
-        for i in range(loops):
+            for i in range(loops):
+                sleep(randint(2, 4))
+                all_posts = self.browser.find_element_by_class_name('_2z6nI')
+                urls = [url.get_attribute('href') for url in all_posts.find_elements_by_tag_name('a')]
+                all_urls.update(urls)
+                self.browser.execute_script('window.scrollTo(0, document.body.scrollHeight)')
+
             sleep(randint(2, 4))
-            all_posts = self.browser.find_element_by_class_name('_2z6nI')
-            urls = [url.get_attribute('href') for url in all_posts.find_elements_by_tag_name('a')]
-            all_urls.update(urls)
-            self.browser.execute_script('window.scrollTo(0, document.body.scrollHeight)')
 
-        sleep(randint(2, 4))
-
-        return all_urls
+            return all_urls
 
     def like_all_posts(self, nick):
         all_urls = self.get_path_all_post(nick)
@@ -117,15 +120,15 @@ class InstaBot:
                 count = 1
             self.browser.get(post)
             sleep(randint(1, 3))
-            comment = self.browser.find_element_by_class_name('Ypffh')
-            comment.click()
+            comm = self.browser.find_element_by_class_name('Ypffh')
+            comm.click()
             c = self.base_comments[randint(0, len(self.base_comments) - 1)]
             sleep(randint(1, 2))
             try:
-                comment.send_keys(c)
+                comm.send_keys(c)
             except:
-                comment = self.browser.find_element_by_class_name('Ypffh.focus-visible')
-                comment.send_keys(c)
+                com = self.browser.find_element_by_class_name('Ypffh.focus-visible')
+                com.send_keys(c)
             sleep(randint(2, 4))
 
             comment.send_keys(Keys.ENTER)
