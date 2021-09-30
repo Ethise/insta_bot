@@ -53,23 +53,23 @@ class InstaBot:
             return self.browser.get(url)
         except:
             print('Такого пользователя нет')
-            return None
+            self.close_conn()
 
     def _get_number_posts(self):
         res = self.browser.find_elements_by_class_name('g47SY ')
-        return res
+        return int(res[0].text.replace(' ', ''))
 
     def get_path_all_post(self, nick):
         sleep(randint(2, 4))
 
         self.go_to_user(nick)
-        num = int(self._get_number_posts()[0].text)
+        num = self._get_number_posts()
         loops = num // 12
         if loops == 0:
             loops = 1
         all_urls = set()
 
-        for i in range(loops):
+        for i in range(loops // 100):
             sleep(randint(2, 4))
             all_posts = self.browser.find_element_by_class_name('_2z6nI')
             urls = [url.get_attribute('href') for url in all_posts.find_elements_by_tag_name('a')]
@@ -114,9 +114,14 @@ class InstaBot:
             self.browser.get(post)
             sleep(randint(1, 3))
             comment = self.browser.find_element_by_class_name('Ypffh')
-            comment.clear()
+            comment.click()
             c = self.base_comments[randint(0, len(self.base_comments) - 1)]
-            comment.send_keys(c)
+            sleep(randint(1, 2))
+            try:
+                comment.send_keys(c)
+            except:
+                comment = self.browser.find_element_by_class_name('Ypffh.focus-visible')
+                comment.send_keys(c)
             sleep(randint(2, 4))
 
             comment.send_keys(Keys.ENTER)
@@ -135,5 +140,5 @@ class InstaBot:
 
 a = InstaBot(log, pas)
 a.sing_in()
-a.all_posts_comments('sergey_tsvelykh')
+a.all_posts_comments('multiplex_ck')
 a.close_conn()
