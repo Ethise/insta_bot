@@ -84,6 +84,7 @@ class InstaBot:
 
     def like_all_posts(self, nick):
         all_urls = self.get_path_all_post(nick)
+
         count = 1
         count_all = 1
         all_num_posts = len(all_urls)
@@ -94,10 +95,9 @@ class InstaBot:
                 count = 1
             self.browser.get(post)
             sleep(randint(1, 3))
-            like = self.browser.find_element_by_xpath(
-                '/html/body/div[1]/section/main/div/div[1]/article/div/div[2]/div/div[2]/section[1]/span[1]/button'
-            )
-            if like.get_attribute('aria-label') == 'Нравится':
+            like = self.browser.find_element_by_class_name('fr66n')
+            like = like.find_element_by_class_name('_8-yf5 ')
+            if like.get_attribute('color') == '#262626':
                 like.click()
             sleep(randint(2, 4))
 
