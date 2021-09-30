@@ -69,7 +69,7 @@ class InstaBot:
             loops = 1
         all_urls = set()
 
-        for i in range(loops // 100):
+        for i in range(loops):
             sleep(randint(2, 4))
             all_posts = self.browser.find_element_by_class_name('_2z6nI')
             urls = [url.get_attribute('href') for url in all_posts.find_elements_by_tag_name('a')]
@@ -92,9 +92,11 @@ class InstaBot:
                 count = 1
             self.browser.get(post)
             sleep(randint(1, 3))
-            self.browser.find_element_by_xpath(
+            like = self.browser.find_element_by_xpath(
                 '/html/body/div[1]/section/main/div/div[1]/article/div/div[2]/div/div[2]/section[1]/span[1]/button'
-            ).click()
+            )
+            if like.get_attribute('aria-label') == 'Нравится':
+                like.click()
             sleep(randint(2, 4))
 
             print(f'{count_all} / {all_num_posts}')
@@ -140,5 +142,5 @@ class InstaBot:
 
 a = InstaBot(log, pas)
 a.sing_in()
-a.all_posts_comments('multiplex_ck')
+a.like_all_posts('xenoner1506')
 a.close_conn()
