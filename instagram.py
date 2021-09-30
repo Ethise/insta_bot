@@ -3,12 +3,12 @@ from time import sleep
 from selenium.webdriver.common.keys import Keys
 from config import log, pas
 from random import randint
+from comments_dictionary import comment
 
 
 class InstaBot:
 
     base_url = 'https://www.instagram.com'
-    base_comments = ['топ оф зе топ', "угар тупо лайк", "АХАХАХХААХ", "ну, ты и крейзи", "\U0001F604\U0001F604\U0001F604"]
 
     @staticmethod
     def conn_webdriver(path):
@@ -19,10 +19,12 @@ class InstaBot:
         except:
             print('Не удалось подключится к драйверу')
 
-    def __init__(self, login, password, path=r'google\chromedriver'):
+    def __init__(self, login, password, comments, path=r'google\chromedriver'):
         self.login = login
         self.password = password
         self.browser = self.conn_webdriver(path)
+        self.comments = comments
+        self.base_comments = self.comments['default']
 
     def sing_in(self):
         try:
@@ -140,7 +142,7 @@ class InstaBot:
         self.browser.quit()
 
 
-a = InstaBot(log, pas)
+a = InstaBot(log, pas, comment)
 a.sing_in()
 a.like_all_posts('xenoner1506')
 a.close_conn()
