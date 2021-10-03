@@ -61,15 +61,22 @@ class InstaBot:
         res = self.browser.find_elements_by_class_name('g47SY ')
         return int(res[0].text.replace(' ', ''))
 
+    @property
+    def is_privat_user(self):
+        try:
+            self.browser.find_element_by_class_name('_4Kbb_._54f4m')
+            print('Приватный аккаунт')
+            return True
+        except:
+            return False
+
     def get_path_all_post(self, nick):
         sleep(randint(2, 4))
 
         self.go_to_user(nick)
-        try:
-            self.browser.find_element_by_class_name('_4Kbb_._54f4m')
-            print('Приватный аккаунт')
+        if self.is_privat_user:
             self.close_conn()
-        except:
+        else:
             num = self._get_number_posts()
             loops = num // 12 + 1
             all_urls = set()
