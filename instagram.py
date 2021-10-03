@@ -136,6 +136,19 @@ class InstaBot:
             count += 1
             count_all += 1
 
+    def add_new_friend(self, nick):
+        sleep(randint(2, 4))
+
+        self.go_to_user(nick)
+        if self.is_privat_user:
+            like = self.browser.find_element_by_class_name('sqdOP.L3NKy.y3zKF')
+            like.click()
+        else:
+            like = self.browser.find_element_by_class_name('_5f5mN.jIbKX._6VtSN.yZn4P')
+            like.click()
+
+        sleep(randint(2, 4))
+
     def close_conn(self):
         sleep(randint(8, 15))
         self.browser.close()
@@ -144,5 +157,5 @@ class InstaBot:
 
 a = InstaBot(log, pas, comment)
 a.sing_in()
-a.event_all_posts('xenoner1506')
+a.add_new_friend('ktozhety')
 a.close_conn()
