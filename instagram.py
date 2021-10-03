@@ -85,6 +85,27 @@ class InstaBot:
 
             return all_urls
 
+    def press_like(self):
+        like = self.browser.find_element_by_class_name('fr66n')
+        like = like.find_element_by_class_name('_8-yf5 ')
+        if like.get_attribute('color') == '#262626':
+            like.click()
+        sleep(randint(2, 4))
+
+    def write_comment(self):
+        com = self.browser.find_element_by_class_name('Ypffh')
+        com.click()
+        c = self.base_comments[randint(0, len(self.base_comments) - 1)]
+        sleep(randint(1, 2))
+        try:
+            com.send_keys(c)
+        except:
+            com = self.browser.find_element_by_class_name('Ypffh.focus-visible')
+            com.send_keys(c)
+        sleep(randint(2, 4))
+
+        com.send_keys(Keys.ENTER)
+
     def event_all_posts(self, nick, switch='all'):
         all_urls = self.get_path_all_post(nick)
 
@@ -93,30 +114,15 @@ class InstaBot:
         all_num_posts = len(all_urls)
 
         for post in all_urls:
-            if count >= 40:
-                sleep(180)
+            if count >= 50:
+                sleep(3600)
                 count = 1
             self.browser.get(post)
             sleep(randint(1, 3))
             if switch == 'like' or switch == 'all':
-                like = self.browser.find_element_by_class_name('fr66n')
-                like = like.find_element_by_class_name('_8-yf5 ')
-                if like.get_attribute('color') == '#262626':
-                    like.click()
-                sleep(randint(2, 4))
+                self.press_like()
             if switch == 'comment' or switch == 'all':
-                com = self.browser.find_element_by_class_name('Ypffh')
-                com.click()
-                c = self.base_comments[randint(0, len(self.base_comments) - 1)]
-                sleep(randint(1, 2))
-                try:
-                    com.send_keys(c)
-                except:
-                    com = self.browser.find_element_by_class_name('Ypffh.focus-visible')
-                    com.send_keys(c)
-                sleep(randint(2, 4))
-
-                com.send_keys(Keys.ENTER)
+                self.write_comment()
             sleep(randint(2, 4))
 
             print(f'{count_all} / {all_num_posts}')
@@ -131,5 +137,5 @@ class InstaBot:
 
 a = InstaBot(log, pas, comment)
 a.sing_in()
-a.event_all_posts('i_am_andreika')
+a.event_all_posts('xenoner1506')
 a.close_conn()
