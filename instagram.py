@@ -137,15 +137,7 @@ class InstaBot:
             count_all += 1
 
     @property
-    def _is_privat_post_subscribe(self):
-        try:
-            self.browser.find_element_by_class_name('sqdOP.L3NKy._8A5w5')
-            return True
-        except:
-            return False
-
-    @property
-    def _is_no_privat_post_subscribe(self):
+    def _is_friend(self):
         try:
             self.browser.find_element_by_class_name('glyphsSpriteFriend_Follow.u-__7')
             return True
@@ -156,14 +148,12 @@ class InstaBot:
         sleep(randint(2, 4))
 
         self.go_to_user(nick)
-        if self.is_privat_user:
-            if not self._is_privat_post_subscribe:
+        if not self._is_friend:
+            if self.is_privat_user:
                 subscribe = self.browser.find_element_by_class_name('sqdOP.L3NKy.y3zKF')
-                subscribe.click()
-        else:
-            if not self._is_no_privat_post_subscribe:
+            else:
                 subscribe = self.browser.find_element_by_class_name('_5f5mN.jIbKX._6VtSN.yZn4P')
-                subscribe.click()
+            subscribe.click()
 
         sleep(randint(2, 4))
 
