@@ -157,11 +157,41 @@ class InstaBot:
 
         sleep(randint(2, 4))
 
-    def _get_33_url_location(self, path_loc):
+    def _get_33_post_location(self, path_loc):
         self.browser.get(path_loc)
         work_field = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/article/div[2]')
         post_containers = [url.get_attribute('href') for url in work_field.find_elements_by_tag_name('a')]
         return post_containers
+
+    def _get_33_user_location(self, path_loc):
+        sleep(randint(2, 4))
+
+        users = []
+        url_posts = self._get_33_post_location(path_loc)
+        for url_post in url_posts:
+            self.browser.get(url_post)
+            user = self.browser.find_element_by_xpath(
+                '//*[@id="react-root"]/section/main/div/div[1]/article/div/div[2]/div/div[1]/div/header/div[2]/div[1]/div[1]/span/a'
+            ).get_attribute('href')
+            self.press_like()
+            users.append(user)
+            sleep(randint(2, 4))
+        return users
+
+    @staticmethod
+    def _get_nick_from_url(url):
+        return url.split('/')[-2]
+
+    def add_new_location_friend(self, path_loc):
+        sleep(randint(2, 4))
+
+        users = self._get_33_user_location(path_loc)
+        for user in users:
+            try:
+                self.add_new_friend(self._get_nick_from_url(user))
+            except:
+                pass
+            sleep(randint(2, 4))
 
     def close_conn(self):
         sleep(randint(8, 15))
@@ -171,5 +201,5 @@ class InstaBot:
 
 a = InstaBot(log, pas, comment)
 a.sing_in()
-print(a._get_33_url_location('https://www.instagram.com/explore/locations/212898659/kyiv-ukraine/'))
+a.add_new_location_friend('https://www.instagram.com/explore/locations/212898659/kyiv-ukraine/')
 a.close_conn()
