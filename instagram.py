@@ -157,6 +157,12 @@ class InstaBot:
 
         sleep(randint(2, 4))
 
+    def _get_33_url_location(self, path_loc):
+        self.browser.get(path_loc)
+        work_field = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/article/div[2]')
+        post_containers = [url.get_attribute('href') for url in work_field.find_elements_by_tag_name('a')]
+        return post_containers
+
     def close_conn(self):
         sleep(randint(8, 15))
         self.browser.close()
@@ -165,5 +171,5 @@ class InstaBot:
 
 a = InstaBot(log, pas, comment)
 a.sing_in()
-a.add_new_friend('xenoner1506')
+print(a._get_33_url_location('https://www.instagram.com/explore/locations/212898659/kyiv-ukraine/'))
 a.close_conn()
