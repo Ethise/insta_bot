@@ -193,6 +193,9 @@ class InstaBot:
                 pass
             sleep(randint(2, 4))
 
+    def add_friends_of_friend(self, nick):
+        friend = self.go_to_user(nick)
+
     def close_conn(self):
         sleep(randint(8, 15))
         self.browser.close()
